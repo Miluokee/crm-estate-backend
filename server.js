@@ -2,7 +2,7 @@ import express from "express"
 import mongoose from "mongoose"
 
 import { registerValidation, loginValidation } from "./validations/auth.validation.js"
-import checkAuth from "./utils/checkAuth.js"
+import { checkAuthorization } from "./helpers/auth.validation.helper.js";
 import { registration, login, getMe } from "./controllers/user.controller.js"
 
 mongoose
@@ -20,7 +20,7 @@ server.get('/', (req, res) => {
 
 server.post('/auth/register', registerValidation, registration)
 server.post('/auth/login', loginValidation, login)
-server.get('/auth/me', checkAuth, getMe)
+server.get('/auth/me', checkAuthorization, getMe)
 
 server.listen(1864, (err) => {
     if (err) {

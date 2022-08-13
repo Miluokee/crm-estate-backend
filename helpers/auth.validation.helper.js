@@ -1,4 +1,5 @@
 import { body } from "express-validator";
+import jsonwebtoken from "jsonwebtoken";
 
 export const JWT_KEY = 'dd8c9a8fe91c1c9617a7ec78151b05ff'
 
@@ -13,4 +14,24 @@ export const isEmailSame = () => {
 
 export const isPasswordSame = () => {
     return body.confirmPassword === body.password
+}
+
+export const checkAuthorization = (req, res, next) => {
+    const token = (req.headers.authorization || '').replace(/Bearer\s?/, '')
+
+    if (token) {
+        try {
+            const decoded = jsonwebtoken.verify(token, JWT_KEY)
+            req.userId = decoded._id
+            next()
+        } catch (error) {
+            return res.status(403).json({
+                message: 'Відмовлено в доступі'
+            })
+        }
+    } else {
+        return res.status(403).json({
+            message: 'Відмовлено в доступі'
+        })
+    }
 }
