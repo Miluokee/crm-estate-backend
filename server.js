@@ -5,6 +5,8 @@ import mongoose from "mongoose"
 import { validationResult } from "express-validator"
 
 import { registerValidation, loginValidation } from "./validations/auth.validation.js"
+import { JWT_KEY } from "./helpers/auth.validation.helper.js";
+import checkAuth from "./utils/checkAuth.js";
 
 import UserModel from "./models/user.model.js";
 
@@ -20,8 +22,6 @@ server.use(express.json())
 server.get('/', (req, res) => {
     res.send('Server started with nodemon')
 })
-
-const JWT_KEY = 'dd8c9a8fe91c1c9617a7ec78151b05ff'
 
 server.post('/auth/register', registerValidation, async (req, res) => {
     try {
@@ -68,7 +68,7 @@ server.post('/auth/register', registerValidation, async (req, res) => {
     }
 })
 
-server.post('/auth/login', async (req, res) => {
+server.post('/auth/login', loginValidation, async (req, res) => {
     try {
         const user = await UserModel.findOne({ email: req.body.email })
 
@@ -81,7 +81,7 @@ server.post('/auth/login', async (req, res) => {
         const isValidPass = await bcrypt.compare(req.body.password, user._doc.passwordHash)
 
         if (!isValidPass) {
-            return res.status(400).json({
+            return res.status(403).json({
                 message: 'Неравильний логін або пароль'
             })
         }
@@ -100,14 +100,35 @@ server.post('/auth/login', async (req, res) => {
             ...userData,
             token
         })
-    } catch (err) {
-        console.log(err)
+    } catch (error) {
+        console.log(error)
         res.status(500).json({
             message: 'Не вдалось авторизуватись'
         })
     }
 })
 
+server.get('/auth/me', checkAuth, async (req, res) => {
+    try {
+        const user = await UserModel.findById(req.userId)
+
+        if(!user) {
+            return res.status(404).json({
+                message: 'Користувач не знайдений'
+            })
+        }
+
+        const { passwordHash, ...userData } = user._doc
+    
+        res.json(userData)
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message: 'Не вдалось авторизуватись'
+        })
+    }
+})
 
 server.listen(1864, (err) => {
     if (err) {
