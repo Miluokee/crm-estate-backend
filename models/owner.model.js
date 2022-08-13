@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const CustomerSchema = new mongoose.Schema({
+const OwnerSchema = new mongoose.Schema({
     fullName: {
         type: String,
         required: true
@@ -10,11 +10,10 @@ const CustomerSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    request: {
-        realtyIsNeed: String,
-        haveCash: String,
-        terms: String,
-        comment: String
+    property: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Realty',
+        required: true
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -26,4 +25,4 @@ const CustomerSchema = new mongoose.Schema({
     timestamps: true
 })
 
-export default mongoose.model('Customer', CustomerSchema)
+export default mongoose.model('Owner', OwnerSchema)

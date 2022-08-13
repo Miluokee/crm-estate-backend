@@ -29,6 +29,12 @@ server.post('/auth/register', registerValidation, registration)
 server.post('/auth/login', loginValidation, login)
 server.get('/auth/me', checkAuthorization, getMe)
 
+//Роути клієнтів - всі клієнти, конкретний клієнт, додати, видалити,редагувати інформацію про клієнта
+server.post('/customer')
+server.get('/customers')
+server.get('/customer/:id')
+server.delete('/customer/:id')
+server.patch('/customer/:id')
 
 //Роути об'єктів нерухомості - отримати всі об'єкти, отримати конкретний об'єкт, додати, видалити, редагувати об'єкт
 server.get('/realty')
@@ -36,13 +42,6 @@ server.get('/realty/:id')
 server.post('/realty')
 server.delete('/realty/:id')
 server.patch('/realty/:id')
-
-//Роути клієнтів - всі клієнти, конкретний клієнт, додати, видалити,редагувати інформацію про клієнта
-server.get('/customers')
-server.get('/customer/:id')
-server.post('/customer')
-server.delete('/customer/:id')
-server.patch('/customer/:id')
 
 //Порт сервера
 server.listen(1864, (err) => {
