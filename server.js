@@ -3,12 +3,14 @@ import mongoose from "mongoose"
 
 //Перевірка валідації даних
 import { registerValidation, loginValidation } from "./validations/auth.validation.js"
+import { customerValidation } from "./validations/customer.validation.js";
 
 //Перевірка авторизації користувача
-import { checkAuthorization } from "./helpers/auth.validation.helper.js";
+import { checkAuthorization, handleValidationErrors } from "./helpers/auth.validation.helper.js";
 
 //Підключення контролерів
 import { registration, login, getMe } from "./controllers/user.controller.js"
+import { addNewCustomer } from "./controllers/customer.controller.js";
 
 //Підключення бази даних
 mongoose
@@ -27,10 +29,10 @@ server.get('/', (req, res) => {
 //Роути користувача - реєстрація, логін, відображення даних
 server.post('/auth/register', registerValidation, registration)
 server.post('/auth/login', loginValidation, login)
-server.get('/auth/me', checkAuthorization, getMe)
+server.get('/auth/me', checkAuthorization, handleValidationErrors, getMe)
 
 //Роути клієнтів - всі клієнти, конкретний клієнт, додати, видалити,редагувати інформацію про клієнта
-server.post('/customer')
+server.post('/customer', checkAuthorization, customerValidation, handleValidationErrors, addNewCustomer)
 server.get('/customers')
 server.get('/customer/:id')
 server.delete('/customer/:id')

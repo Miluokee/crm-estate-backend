@@ -1,5 +1,6 @@
 import { body } from "express-validator";
 import jsonwebtoken from "jsonwebtoken";
+import { validationResult } from "express-validator"
 
 export const JWT_KEY = 'dd8c9a8fe91c1c9617a7ec78151b05ff'
 
@@ -34,4 +35,13 @@ export const checkAuthorization = (req, res, next) => {
             message: 'Відмовлено в доступі'
         })
     }
+}
+
+export const handleValidationErrors = (req, res, next) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(400).json(errors.array())
+    }
+
+    next()
 }
