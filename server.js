@@ -9,8 +9,8 @@ import { customerValidation } from "./validations/customer.validation.js";
 import { checkAuthorization, handleValidationErrors } from "./helpers/auth.validation.helper.js";
 
 //Підключення контролерів
-import { registration, login, getMe } from "./controllers/user.controller.js"
-import { addNewCustomer, getAllCustomers, getOneCustomer, deleteCustomer, editCustomerInfo } from "./controllers/customer.controller.js";
+
+import { CustomerControllers, UserControllers } from "./controllers/controllers.js";
 
 //Підключення бази даних
 mongoose
@@ -27,16 +27,16 @@ server.get('/', (req, res) => {
 })
 
 //Роути користувача - реєстрація, логін, відображення даних
-server.post('/auth/register', registerValidation, registration)
-server.post('/auth/login', loginValidation, login)
-server.get('/auth/me', checkAuthorization, handleValidationErrors, getMe)
+server.post('/auth/register', registerValidation, UserControllers.registration)
+server.post('/auth/login', loginValidation, UserControllers.login)
+server.get('/auth/me', checkAuthorization, handleValidationErrors, UserControllers.getMe)
 
 //Роути клієнтів - всі клієнти, конкретний клієнт, додати, видалити,редагувати інформацію про клієнта
-server.post('/customers', checkAuthorization, customerValidation, handleValidationErrors, addNewCustomer)
-server.get('/customers', checkAuthorization, getAllCustomers)
-server.get('/customers/:id', checkAuthorization, getOneCustomer)
-server.delete('/customers/:id', checkAuthorization, deleteCustomer)
-server.patch('/customers/:id', checkAuthorization, editCustomerInfo)
+server.post('/customers', checkAuthorization, customerValidation, handleValidationErrors, CustomerControllers.addNewCustomer)
+server.get('/customers', checkAuthorization, CustomerControllers.getAllCustomers)
+server.get('/customers/:id', checkAuthorization, CustomerControllers.getOneCustomer)
+server.delete('/customers/:id', checkAuthorization, CustomerControllers.deleteCustomer)
+server.patch('/customers/:id', checkAuthorization, customerValidation, CustomerControllers.editCustomerInfo)
 
 //Роути власників - всі власники, конкретний власник, додати, видалити,редагувати інформацію про власника
 server.post('/owners')
