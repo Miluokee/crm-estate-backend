@@ -9,8 +9,7 @@ import { customerValidation } from "./validations/customer.validation.js";
 import { checkAuthorization, handleValidationErrors } from "./helpers/auth.validation.helper.js";
 
 //Підключення контролерів
-
-import { CustomerControllers, UserControllers } from "./controllers/controllers.js";
+import { CustomerControllers, UserControllers, RealtyControllers } from "./controllers/controllers.js";
 
 //Підключення бази даних
 mongoose
@@ -38,6 +37,13 @@ server.get('/customers/:id', checkAuthorization, CustomerControllers.getOneCusto
 server.delete('/customers/:id', checkAuthorization, CustomerControllers.deleteCustomer)
 server.patch('/customers/:id', checkAuthorization, customerValidation, CustomerControllers.editCustomerInfo)
 
+//Роути об'єктів нерухомості - отримати всі об'єкти, отримати конкретний об'єкт, додати, видалити, редагувати об'єкт
+server.post('/realty', checkAuthorization, RealtyControllers.createRealtyObject)
+server.get('/realty')
+server.get('/realty/:id')
+server.delete('/realty/:id')
+server.patch('/realty/:id')
+
 //Роути власників - всі власники, конкретний власник, додати, видалити,редагувати інформацію про власника
 server.post('/owners')
 server.get('/owners')
@@ -45,12 +51,7 @@ server.get('/owners/:id')
 server.delete('/owners/:id')
 server.patch('/owners/:id')
 
-//Роути об'єктів нерухомості - отримати всі об'єкти, отримати конкретний об'єкт, додати, видалити, редагувати об'єкт
-server.get('/realty')
-server.get('/realty/:id')
-server.post('/realty')
-server.delete('/realty/:id')
-server.patch('/realty/:id')
+
 
 //Порт сервера
 server.listen(1864, (err) => {
