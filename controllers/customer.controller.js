@@ -23,3 +23,11 @@ export const addNewCustomer = async (req, res) => {
         })
     }
 }
+
+export const getAllCustomers = () => {}
+
+export const getOneCustomer = () => {}
+
+export const editCustomerInfo = () => {}
+
+export const deleteCustomer = () => {}

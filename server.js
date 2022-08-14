@@ -32,11 +32,18 @@ server.post('/auth/login', loginValidation, login)
 server.get('/auth/me', checkAuthorization, handleValidationErrors, getMe)
 
 //Роути клієнтів - всі клієнти, конкретний клієнт, додати, видалити,редагувати інформацію про клієнта
-server.post('/customer', checkAuthorization, customerValidation, handleValidationErrors, addNewCustomer)
+server.post('/customers', checkAuthorization, customerValidation, handleValidationErrors, addNewCustomer)
 server.get('/customers')
-server.get('/customer/:id')
-server.delete('/customer/:id')
-server.patch('/customer/:id')
+server.get('/customers/:id')
+server.delete('/customers/:id')
+server.patch('/customers/:id')
+
+//Роути власників - всі власники, конкретний власник, додати, видалити,редагувати інформацію про власника
+server.post('/owners')
+server.get('/owners')
+server.get('/owners/:id')
+server.delete('/owners/:id')
+server.patch('/owners/:id')
 
 //Роути об'єктів нерухомості - отримати всі об'єкти, отримати конкретний об'єкт, додати, видалити, редагувати об'єкт
 server.get('/realty')
