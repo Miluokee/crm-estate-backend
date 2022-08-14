@@ -10,7 +10,7 @@ import { checkAuthorization, handleValidationErrors } from "./helpers/auth.valid
 
 //Підключення контролерів
 import { registration, login, getMe } from "./controllers/user.controller.js"
-import { addNewCustomer } from "./controllers/customer.controller.js";
+import { addNewCustomer, getAllCustomers, getOneCustomer, deleteCustomer, editCustomerInfo } from "./controllers/customer.controller.js";
 
 //Підключення бази даних
 mongoose
@@ -33,10 +33,10 @@ server.get('/auth/me', checkAuthorization, handleValidationErrors, getMe)
 
 //Роути клієнтів - всі клієнти, конкретний клієнт, додати, видалити,редагувати інформацію про клієнта
 server.post('/customers', checkAuthorization, customerValidation, handleValidationErrors, addNewCustomer)
-server.get('/customers')
-server.get('/customers/:id')
-server.delete('/customers/:id')
-server.patch('/customers/:id')
+server.get('/customers', checkAuthorization, getAllCustomers)
+server.get('/customers/:id', checkAuthorization, getOneCustomer)
+server.delete('/customers/:id', checkAuthorization, deleteCustomer)
+server.patch('/customers/:id', checkAuthorization, editCustomerInfo)
 
 //Роути власників - всі власники, конкретний власник, додати, видалити,редагувати інформацію про власника
 server.post('/owners')
