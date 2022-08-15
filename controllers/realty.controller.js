@@ -118,56 +118,52 @@ export const editRealtyObject = async (req, res) => {
                 },
                 {
                     user: req.userId,
-            realtyType: req.body.realtyType,
-            cost: req.body.cost,
-            location: req.body.location,
-            district: req.body.district,
-            street: req.body.street,
-            houseNumber: req.body.houseNumber,
-            flatNumber: req.body.flatNumber,
-            floorCount: req.body.floorCount,
-            floor: req.body.floor
+                    realtyType: req.body.realtyType,
+                    cost: req.body.cost,
+                    location: req.body.location,
+                    district: req.body.district,
+                    street: req.body.street,
+                    houseNumber: req.body.houseNumber,
+                    flatNumber: req.body.flatNumber,
+                    floorCount: req.body.floorCount,
+                    floor: req.body.floor
                 }
-            )
-
-            return res.json({
-                success: true
+                )
+            
+                return res.json({
+                    success: true
+                })
+            }
+        
+            const newOwner = new OwnerModel({
+                fullName: req.body.owner.fullName,
+                phoneNumber: req.body.owner.phoneNumber,
+                user: req.userId
             })
-        }
+        
+            const owner = await newOwner.save()
+        
+            await RealtyModel.updateOne(
+                {
+                    _id: realtyId
+                },
+                {
+                    user: req.userId,
+                    realtyType: req.body.realtyType,
+                    cost: req.body.cost,
+                    location: req.body.location,
+                    district: req.body.district,
+                    street: req.body.street,
+                    houseNumber: req.body.houseNumber,
+                    flatNumber: req.body.flatNumber,
+                    floorCount: req.body.floorCount,
+                    floor: req.body.floor,
+                    owner: owner
+                })
 
-        const newOwner = new OwnerModel({
-            fullName: req.body.owner.fullName,
-            phoneNumber: req.body.owner.phoneNumber,
-            user: req.userId
-        })
-
-        const owner = await newOwner.save()
-
-        await RealtyModel.updateOne(
-            {
-                _id: realtyId
-            },
-            {
-            user: req.userId,
-            realtyType: req.body.realtyType,
-            cost: req.body.cost,
-            location: req.body.location,
-            district: req.body.district,
-            street: req.body.street,
-            houseNumber: req.body.houseNumber,
-            flatNumber: req.body.flatNumber,
-            floorCount: req.body.floorCount,
-            floor: req.body.floor,
-            owner: owner
-        })
-
-        res.json({
-            success: true
-        })
-
-
-
-
+                res.json({
+                    success: true
+                })
     } catch (error) {
         console.log(error)
         res.status(500).json({
