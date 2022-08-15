@@ -40,9 +40,9 @@ server.patch('/customers/:id', checkAuthorization, customerValidation, CustomerC
 //Роути об'єктів нерухомості - отримати всі об'єкти, отримати конкретний об'єкт, додати, видалити, редагувати об'єкт
 server.post('/realty', checkAuthorization, RealtyControllers.createRealtyObject)
 server.get('/realty', RealtyControllers.getAllRealtyObjects)
-server.get('/realty/:id')
+server.get('/realty/:id', RealtyControllers.getRealtyObject)
 server.delete('/realty/:id')
-server.patch('/realty/:id')
+server.patch('/realty/:id', checkAuthorization, RealtyControllers.editRealtyObject)
 
 //Роути власників - всі власники, конкретний власник, додати, видалити,редагувати інформацію про власника
 server.post('/owners')
@@ -50,8 +50,6 @@ server.get('/owners')
 server.get('/owners/:id')
 server.delete('/owners/:id')
 server.patch('/owners/:id')
-
-
 
 //Порт сервера
 server.listen(1864, (err) => {
