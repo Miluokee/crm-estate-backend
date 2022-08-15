@@ -2,7 +2,7 @@ import RealtyModel from "../models/realty.model.js";
 import OwnerModel from "../models/owner.model.js";
 
 export const createRealtyObject = async (req, res) => {
-    try {
+    try {        
         const realtyOwner = await OwnerModel.findOne({phoneNumber: req.body.owner.phoneNumber})
 
         if (!realtyOwner) {
@@ -54,6 +54,21 @@ export const createRealtyObject = async (req, res) => {
         console.log(error)
         res.status(500).json({
             message: "Не вдалось створити об'єкт нерухомості"
+        })
+    }
+}
+
+export const getAllRealtyObjects = async (req, res) => {
+    try {
+        const realty = await RealtyModel.find().populate('user').exec()
+        
+        console.log(realty)
+
+        res.json(realty)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message: "Не вдалось отримати об'єкти нерухомості"
         })
     }
 }

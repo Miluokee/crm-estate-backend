@@ -91,7 +91,11 @@ export const getMe = async (req, res) => {
             })
         }
 
+        console.log(user)
+
         const { passwordHash, ...userData } = user._doc
+
+        console.log(userData)
     
         res.json(userData)
         

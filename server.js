@@ -39,7 +39,7 @@ server.patch('/customers/:id', checkAuthorization, customerValidation, CustomerC
 
 //Роути об'єктів нерухомості - отримати всі об'єкти, отримати конкретний об'єкт, додати, видалити, редагувати об'єкт
 server.post('/realty', checkAuthorization, RealtyControllers.createRealtyObject)
-server.get('/realty')
+server.get('/realty', RealtyControllers.getAllRealtyObjects)
 server.get('/realty/:id')
 server.delete('/realty/:id')
 server.patch('/realty/:id')
