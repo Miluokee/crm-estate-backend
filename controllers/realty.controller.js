@@ -73,32 +73,15 @@ export const getAllRealtyObjects = async (req, res) => {
 
 export const getRealtyObject = async (req, res) => {
     try {
-        const realtyId = req.params.id
-        await RealtyModel.findOneAndUpdate({
-            _id: realtyId
-        },
-        {
-            $inc: { viewCount: 1}
-        },
-        {
-            returnDocument: 'after'
-        },
-        (error, doc) => {
-            if (error) {
-                console.log(error)
-                return res.status(500).json({
-                    message: "Не вдалось відобразити об'єкт нерухомості"
-                })
-            }
-            if (!doc) {
-                console.log(error)
-                return res.status(404).json({
-                    message: "Не вдалось знайти об'єкт нерухомості"
-                })
-            }
+        const realty = await RealtyModel.findById(req.params.id).populate('user')
 
-            res.json(doc)
-        }).populate('user')
+        if (!realty) {
+            return res.status(404).json({
+                message: "Об'єкт нерухомості не знайдений"
+            })
+        }
+
+        res.json(realty)
     } catch (error) {
         console.log(error)
         res.status(500).json({
@@ -135,9 +118,9 @@ export const editRealtyObject = async (req, res) => {
                 })
             }
         
-            const newOwner = new OwnerModel({
-                fullName: req.body.owner.fullName,
-                phoneNumber: req.body.owner.phoneNumber,
+            const newOwner = new OwnerModel({                       //This part need FIX - if another name with same number it can't create new Owner
+                fullName: req.body.owner.fullName,                  //Need to check numbers for identity and if it same - leave this Owner without changes
+                phoneNumber: req.body.owner.phoneNumber,            //If numbers are different - need to set new number
                 user: req.userId
             })
         
@@ -168,6 +151,42 @@ export const editRealtyObject = async (req, res) => {
         console.log(error)
         res.status(500).json({
             message: "Помилка редагування інформації про об'єкт нерухомості"
+        })
+    }
+}
+
+export const deleteRealtyObject = async (req, res) => {
+    try {
+        const realtyId = req.params.id
+
+        RealtyModel.findOneAndDelete(
+            {
+                _id: realtyId
+            },
+            (error, doc) => {
+                if (error) {
+                    console.log(error)
+                    return res.status(500).json({
+                        message: "Не вдалось видалити об'єкт нерухомості"
+                    })
+                }
+
+                if (!doc) {
+                    return res.status(404).json({
+                        message: "Не вдалось видалити об'єкт нерухомості"
+                    })
+                }
+
+                res.json({
+                    success: true
+                })
+            }
+            )
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message: "Не вдалось видалити статтю"
         })
     }
 }

@@ -41,7 +41,7 @@ server.patch('/customers/:id', checkAuthorization, customerValidation, CustomerC
 server.post('/realty', checkAuthorization, RealtyControllers.createRealtyObject)
 server.get('/realty', RealtyControllers.getAllRealtyObjects)
 server.get('/realty/:id', RealtyControllers.getRealtyObject)
-server.delete('/realty/:id')
+server.delete('/realty/:id', checkAuthorization, RealtyControllers.deleteRealtyObject)
 server.patch('/realty/:id', checkAuthorization, RealtyControllers.editRealtyObject)
 
 //Роути власників - всі власники, конкретний власник, додати, видалити,редагувати інформацію про власника
