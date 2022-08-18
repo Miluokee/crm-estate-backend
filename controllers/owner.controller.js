@@ -3,31 +3,23 @@ import RealtyModel from "../models/realty.model.js";
 
 export const newOwner = async (req, res) => {
     try {
-        const property = await RealtyModel.find().populate('user').exec()
-        
-        console.log(property)
+        const isOwner = await OwnerModel.findOne({phoneNumber: req.body.phoneNumber})
 
-        const isOwner = await property.reduce((acc, rec) => {
-            let number = rec.owner.phoneNumber
-            if (number === req.body.phoneNumber) {
-                return [rec, ...acc]
-            }
-            return acc
-        }, [])
-
-        console.log(isOwner)
-        
-        const doc = new OwnerModel(
-            {
+        if(!isOwner) {
+            const newOwner = new OwnerModel({
                 fullName: req.body.fullName,
                 phoneNumber: req.body.phoneNumber,
-                user: req.userId,
-                property: isOwner
-            }
-        )
+                user: req.userId
+            })
 
-        const owner = await doc.save()
-        res.json(owner)
+            const owner = await newOwner.save()
+
+            return res.json(owner)
+        }
+
+        res.json(isOwner)
+
+        
     } catch (error) {
         console.log(error)
         res.json({

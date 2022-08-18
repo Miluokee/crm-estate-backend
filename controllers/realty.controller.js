@@ -1,5 +1,6 @@
 import RealtyModel from "../models/realty.model.js";
 import OwnerModel from "../models/owner.model.js";
+import ownerModel from "../models/owner.model.js";
 
 export const createRealtyObject = async (req, res) => {
     try {        
@@ -9,7 +10,8 @@ export const createRealtyObject = async (req, res) => {
             const newOwner = new OwnerModel({
                 fullName: req.body.owner.fullName,
                 phoneNumber: req.body.owner.phoneNumber,
-                user: req.userId
+                user: req.userId,
+                property: [ ...realty ]
             })
 
             const owner = await newOwner.save()
