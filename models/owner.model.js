@@ -14,6 +14,11 @@ const OwnerSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
+    },
+    property: {
+        type: Array,
+        ref: 'Realty',
+        default: []
     }
 },
 {

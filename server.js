@@ -9,7 +9,7 @@ import { customerValidation } from "./validations/customer.validation.js";
 import { checkAuthorization, handleValidationErrors } from "./helpers/auth.validation.helper.js";
 
 //Підключення контролерів
-import { CustomerControllers, UserControllers, RealtyControllers } from "./controllers/controllers.js";
+import { CustomerControllers, UserControllers, RealtyControllers, OwnerControllers } from "./controllers/controllers.js";
 
 //Підключення бази даних
 mongoose
@@ -45,7 +45,7 @@ server.delete('/realty/:id', checkAuthorization, RealtyControllers.deleteRealtyO
 server.patch('/realty/:id', checkAuthorization, RealtyControllers.editRealtyObject)
 
 //Роути власників - всі власники, конкретний власник, додати, видалити,редагувати інформацію про власника
-server.post('/owners')
+server.post('/owners', checkAuthorization, OwnerControllers.newOwner)
 server.get('/owners')
 server.get('/owners/:id')
 server.delete('/owners/:id')
