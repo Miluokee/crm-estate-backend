@@ -1,6 +1,5 @@
 import RealtyModel from "../models/realty.model.js";
 import OwnerModel from "../models/owner.model.js";
-import ownerModel from "../models/owner.model.js";
 
 export const createRealtyObject = async (req, res) => {
     try {        
@@ -8,10 +7,9 @@ export const createRealtyObject = async (req, res) => {
 
         if (!realtyOwner) {
             const newOwner = new OwnerModel({
-                fullName: req.body.owner.fullName,
-                phoneNumber: req.body.owner.phoneNumber,
-                user: req.userId,
-                property: [ ...realty ]
+                fullName: req.body.fullName,
+                phoneNumber: req.body.phoneNumber,
+                user: req.userId
             })
 
             const owner = await newOwner.save()
@@ -50,6 +48,17 @@ export const createRealtyObject = async (req, res) => {
         })
 
         const realty = await newRealty.save()
+
+        const propertyList = await OwnerModel.findById({_id: realtyOwner._id})
+
+        const updateOwner = await OwnerModel.updateOne(
+            {
+                _id: realtyOwner._id
+            },
+            {
+                property: [ ...propertyList.property, realty ]
+            }
+        )
 
         res.json(realty)
     } catch (error) {

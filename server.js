@@ -45,8 +45,7 @@ server.delete('/realty/:id', checkAuthorization, RealtyControllers.deleteRealtyO
 server.patch('/realty/:id', checkAuthorization, RealtyControllers.editRealtyObject)
 
 //Роути власників - всі власники, конкретний власник, додати, видалити,редагувати інформацію про власника
-server.post('/owners', checkAuthorization, OwnerControllers.newOwner)
-server.get('/owners')
+server.get('/owners', checkAuthorization, OwnerControllers.getOwners)
 server.get('/owners/:id')
 server.delete('/owners/:id')
 server.patch('/owners/:id')
