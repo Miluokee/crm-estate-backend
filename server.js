@@ -26,9 +26,9 @@ server.get('/', (req, res) => {
 })
 
 //Роути користувача - реєстрація, логін, відображення даних
-server.post('/auth/register', registerValidation, UserControllers.registration)
-server.post('/auth/login', loginValidation, UserControllers.login)
-server.get('/auth/me', checkAuthorization, handleValidationErrors, UserControllers.getMe)
+server.post('/auth/register', registerValidation, UserControllers.registration)                                                             //works
+server.post('/auth/login', loginValidation, UserControllers.login)                                                                          //works
+server.get('/auth/me', checkAuthorization, handleValidationErrors, UserControllers.getMe)                                                   //works
 
 //Роути клієнтів - всі клієнти, конкретний клієнт, додати, видалити,редагувати інформацію про клієнта
 server.post('/customers', checkAuthorization, customerValidation, handleValidationErrors, CustomerControllers.addNewCustomer)
@@ -45,10 +45,10 @@ server.delete('/realty/:id', checkAuthorization, RealtyControllers.deleteRealtyO
 server.patch('/realty/:id', checkAuthorization, RealtyControllers.editRealtyObject)
 
 //Роути власників - всі власники, конкретний власник, додати, видалити,редагувати інформацію про власника
-server.get('/owners', checkAuthorization, OwnerControllers.getOwners)
-server.get('/owners/:id')
-server.delete('/owners/:id')
-server.patch('/owners/:id')
+server.get('/owners', checkAuthorization, OwnerControllers.getAllOwners)
+server.get('/owners/:id', checkAuthorization, OwnerControllers.getOwner)
+server.delete('/owners/:id', checkAuthorization, OwnerControllers.deleteOwner)
+server.patch('/owners/:id', checkAuthorization, OwnerControllers.updateOwner)
 
 //Порт сервера
 server.listen(1864, (err) => {

@@ -2,13 +2,13 @@ import RealtyModel from "../models/realty.model.js";
 import OwnerModel from "../models/owner.model.js";
 
 export const createRealtyObject = async (req, res) => {
-    try {        
+    try {
         const realtyOwner = await OwnerModel.findOne({phoneNumber: req.body.owner.phoneNumber})
 
         if (!realtyOwner) {
             const newOwner = new OwnerModel({
-                fullName: req.body.fullName,
-                phoneNumber: req.body.phoneNumber,
+                fullName: req.body.owner.fullName,
+                phoneNumber: req.body.owner.phoneNumber,
                 user: req.userId
             })
 
@@ -27,11 +27,11 @@ export const createRealtyObject = async (req, res) => {
                 floor: req.body.floor,
                 owner: owner
             })
-            
+
             const realty = await newRealty.save()
 
             return res.json(realty)
-        } 
+        }
         
         const newRealty = new RealtyModel({
             user: req.userId,
@@ -49,17 +49,6 @@ export const createRealtyObject = async (req, res) => {
 
         const realty = await newRealty.save()
 
-        const propertyList = await OwnerModel.findById({_id: realtyOwner._id})
-
-        const updateOwner = await OwnerModel.updateOne(
-            {
-                _id: realtyOwner._id
-            },
-            {
-                property: [ ...propertyList.property, realty ]
-            }
-        )
-
         res.json(realty)
     } catch (error) {
         console.log(error)
@@ -67,11 +56,11 @@ export const createRealtyObject = async (req, res) => {
             message: "Не вдалось створити об'єкт нерухомості"
         })
     }
-}
+} 
 
 export const getAllRealtyObjects = async (req, res) => {
     try {
-        const realty = await RealtyModel.find().populate('user').exec()
+        const realty = await RealtyModel.find().populate('owner').populate('user').exec()
 
         res.json(realty)
     } catch (error) {
@@ -84,7 +73,7 @@ export const getAllRealtyObjects = async (req, res) => {
 
 export const getRealtyObject = async (req, res) => {
     try {
-        const realty = await RealtyModel.findById(req.params.id).populate('user')
+        const realty = await RealtyModel.findById(req.params.id).populate('user').populate('owner').exec()
 
         if (!realty) {
             return res.status(404).json({

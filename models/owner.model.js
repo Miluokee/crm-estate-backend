@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import RealtySchema from "./realty.model.js";
 
 const OwnerSchema = new mongoose.Schema({
     fullName: {
@@ -14,11 +15,6 @@ const OwnerSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    },
-    property: {
-        type: Array,
-        ref: 'Realty',
-        default: []
     }
 },
 {

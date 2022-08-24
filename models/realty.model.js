@@ -16,8 +16,9 @@ const RealtySchema = new mongoose.Schema({
     floorCount: Number,
     floor: Number,
     owner: {
-        fullName: String,
-        phoneNumber: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Owner',
+        required: true
     }
 },
 {
