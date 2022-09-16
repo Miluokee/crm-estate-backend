@@ -13,7 +13,7 @@ import { CustomerControllers, UserControllers, RealtyControllers, OwnerControlle
 
 //Підключення бази даних
 mongoose
-    .connect('mongodb+srv://miluokee:1864f45T@mnt-estate-db.szaxcaj.mongodb.net/mnt-estate?retryWrites=true&w=majority')
+    .connect('mongodb+srv://miluokee:1864f45T@mnt-estate-db.szaxcaj.mongodb.net/?retryWrites=true&w=majority')
     .then(() => console.log('Database started on Mongoose'))
     .catch((error) => console.log('Database error', error))
 
